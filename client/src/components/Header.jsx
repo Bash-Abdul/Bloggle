@@ -14,7 +14,7 @@ const Header = () => {
           </Link>
 
           <ul className='nav__menu'>
-            <li><Link to={'/profile'}>Bash Abdul</Link></li>
+            <li><Link to={'/profile/:id'}>Bash Abdul</Link></li>
             <li><Link to={'/create'}>Create Post</Link></li>
             <li><Link to={'/authors'}>Authors</Link></li>
             <li><Link to={'/logout'}>Logout</Link></li>
