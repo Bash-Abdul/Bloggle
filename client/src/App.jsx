@@ -17,6 +17,7 @@ import Dashboard from "./pages/Dashboard";
 import EditPosts from "./pages/EditPosts";
 import Logout from "./pages/Logout";
 import "./index.css";
+import DeletePosts from "./pages/DeletePosts";
 
 
 
@@ -38,6 +39,7 @@ function App() {
       <Route path="/posts/users/:id" element={<AuthorPosts/>} />
       <Route path="/myposts/:id" element={<Dashboard/>} />
       <Route path="/posts/:id/edit" element={<EditPosts/>} />
+      <Route path="/posts/:id/delete" element={<DeletePosts/>} />
       <Route path="/logout" element={<Logout/>} />
     </Routes>
     <Footer/>
