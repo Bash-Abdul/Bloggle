@@ -1,8 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const DeletePosts = () => {
   return (
-    <div>DeletePosts</div>
+    <Link className='btn sm danger' >Delete</Link>
   )
 }
 

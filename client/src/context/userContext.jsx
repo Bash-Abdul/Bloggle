@@ -7,12 +7,14 @@ const UserProvider = ({ children }) => {
 
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')))
 
+
     useEffect(() => {
         localStorage.setItem('user', JSON.stringify(currentUser))
     }, [currentUser])
 
+    const token = currentUser?.token;
     const value = {
-        currentUser, setCurrentUser
+        currentUser, setCurrentUser, token
     }
 
 

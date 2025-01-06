@@ -103,7 +103,7 @@ const postUserGet = async (req, res, next) => {
         const userPost = await Post.find({ creator: id }).sort({ createdAt: -1 })
         res.status(200).json(userPost)
     } catch (error) {
-        return next(new HttpError("Error getting user posts", 422))
+        return next(new HttpError(error))
     }
 }
 

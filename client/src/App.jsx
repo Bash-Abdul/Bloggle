@@ -18,6 +18,7 @@ import EditPosts from "./pages/EditPosts";
 import Logout from "./pages/Logout";
 import "./index.css";
 import DeletePosts from "./pages/DeletePosts";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 
 
@@ -32,14 +33,14 @@ function App() {
       <Route path="/posts/:id" element={<PostDetail/>} />
       <Route path="/signup" element={<Register/>} />
       <Route path="/login" element={<Login/>} />
-      <Route path="/profile/:id" element={<UserProfile/>} />
+      <Route path="/profile/:id" element={<ProtectedRoute><UserProfile/></ProtectedRoute>} />
       <Route path="/authors" element={<Authors/>} />
-      <Route path="/create" element={<CreatePosts/>} />
+      <Route path="/create" element={<ProtectedRoute><CreatePosts/></ProtectedRoute>} />
       <Route path="/posts/categories/:category" element={<CategoryPosts/>} />
       <Route path="/posts/users/:id" element={<AuthorPosts/>} />
-      <Route path="/myposts/:id" element={<Dashboard/>} />
-      <Route path="/posts/:id/edit" element={<EditPosts/>} />
-      <Route path="/posts/:id/delete" element={<DeletePosts/>} />
+      <Route path="/myposts/:id" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
+      <Route path="/posts/:id/edit" element={<ProtectedRoute><EditPosts/></ProtectedRoute>} />
+      <Route path="/posts/:id/delete" element={<ProtectedRoute><DeletePosts/></ProtectedRoute>} />
       <Route path="/logout" element={<Logout/>} />
     </Routes>
     <Footer/>

@@ -9,6 +9,7 @@ const PostItem = ({
   description,
   authorID,
   thumbnail,
+  createdAt
 }) => {
 
     const shortDesc = description.length > 145 ? description.substr(0, 145) + '...' : description;
@@ -17,16 +18,16 @@ const PostItem = ({
   return (
     <article className="post">
       <div className="post__thumbnail">
-        <img src={thumbnail} alt="Blog Post Image" />
+        <img src={`${import.meta.env.VITE_ASSETS_URL}/uploads/${thumbnail}`} alt="Blog Post Image" />
       </div>
 
       <div className="post__content">
         <Link to={`/posts/${postID}`}>
           <h3>{postTitle}</h3>
         </Link>
-        <p> {shortDesc} </p>
+        <p dangerouslySetInnerHTML={{__html: shortDesc}}></p>
         <div className="post__footer">
-          <PostAuthor authorID={authorID} />
+          <PostAuthor authorID={authorID} createdAt={createdAt} />
           <Link to={`/posts/categories/${category}`} className="btn category">{category}</Link>
         </div>
       </div>

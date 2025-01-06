@@ -10,7 +10,7 @@ router.get('/', getPosts)
 router.get('/:id', getPost)
 router.patch('/:id', authMiddleWare ,editPost)
 router.delete('/:id', authMiddleWare,deletePost)
-router.get('/users/:fgdg', postUserGet)
+router.get('/post/users/:fgdg', postUserGet)
 router.get('/:categories/:category', getCatPost)
 router.get('/authors/:id', getUsersPost)
 

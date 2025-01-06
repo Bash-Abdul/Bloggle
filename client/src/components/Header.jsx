@@ -25,7 +25,7 @@ const Header = () => {
         {currentUser?.id &&
           navToggle && (
             <ul className='nav__menu'>
-              <li><Link to={'/profile/:id'} onClick={closeNav}>Bash Abdul</Link></li>
+              <li><Link to={'/profile/:id'} onClick={closeNav}>{currentUser?.name}</Link></li>
               <li><Link to={'/create'} onClick={closeNav}>Create Post</Link></li>
               <li><Link to={'/authors'} onClick={closeNav}>Authors</Link></li>
               <li><Link to={'/logout'} onClick={closeNav}>Logout</Link></li>

@@ -1,11 +1,41 @@
-import React, { useState } from "react";
-import { DUMMY_POSTS } from "../data";
+import React, { useState, useEffect} from "react";
 import PostItem from "../components/PostItem";
 import { useNavigate } from "react-router-dom";
+// import Loader from './Loader'
+import Loader from "../components/Loader";
+import axios from 'axios'
+import { useParams } from "react-router-dom";
 
 const AuthorPosts = () => {
-  const [authorPosts, setAuthorPosts] = useState(DUMMY_POSTS);
+  const {id} = useParams();
+  const [authorPosts, setAuthorPosts] = useState([]);
   const navigate = useNavigate();
+  const {error, setError} = useState('')
+  const [loader, setLoader] = useState(false)
+
+
+  useEffect(()=>{
+    const fetchPosts = async () =>{
+      setLoader(true);
+
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/posts/post/users/${id}`);
+        const post = response?.data
+        setAuthorPosts(post)
+      } catch (err) {
+        // setError(err);
+        console.log(err);
+      }
+
+      setLoader(false);
+    }
+
+    fetchPosts();
+  }, [id])
+
+  if(loader){
+    return <Loader/>
+  }
 
   return (
     <section className="posts">
@@ -19,7 +49,7 @@ const AuthorPosts = () => {
       {authorPosts.length > 0 ? (
         <div className="container posts__container">
           {authorPosts.map(
-            ({ id, thumbnail, category, title, description, authorID }) => (
+            ({ _id: id, thumbnail, category, title, description, creator, createdAt }) => (
               <PostItem
                 key={id}
                 postID={id}
@@ -27,7 +57,8 @@ const AuthorPosts = () => {
                 category={category}
                 title={title}
                 description={description}
-                authorID={authorID}
+                authorID={creator}
+                createdAt={createdAt}
               />
             )
           )}
