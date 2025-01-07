@@ -25,6 +25,12 @@ app.use(cors({credentials: true, origin: function (origin, callback) {
 app.use(upload())
 app.use('/uploads', express.static(__dirname + '/uploads'))
 
+// Add a root route handler
+app.get('/', (req, res) => {
+  res.send('Welcome to the Bloggle API!');
+});
+
+
 app.use('/api/users', userRoutes)
 app.use('/api/posts', postRoutes)
 
