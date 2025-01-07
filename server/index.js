@@ -3,6 +3,8 @@ const cors = require('cors')
 const {connect} = require('mongoose')
 require('dotenv').config()
 const upload = require('express-fileupload')
+const connectDB = require('./db'); // Adjust path if needed
+
 
 const allowedOrigins = [
     `${process.env.FRONTEND_URL}`
@@ -36,6 +38,8 @@ app.use('/api/posts', postRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
+
+connectDB();
 
 connect(process.env.MONGO_URI).then(app.listen(process.env.PORT || 5000, () => console.log(`SERVER STARTED ON PORT ${process.env.PORT}`))).catch(error => {console.log(error)})
 
