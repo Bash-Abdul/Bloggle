@@ -4,6 +4,11 @@ const {connect} = require('mongoose')
 require('dotenv').config()
 const upload = require('express-fileupload')
 
+const allowedOrigins = [
+    "https://bloggle-client.vercel.app",
+    "http://localhost:5175"
+  ];
+
 const userRoutes = require('./routes/userRoutes')
 const postRoutes = require('./routes/postRoutes')
 const { notFound, errorHandler } = require('./middleware/errorMiddleware')
@@ -11,7 +16,13 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware')
 const app = express(); // Initialise express
 app.use(express.json({extended: true}))
 app.use(express.urlencoded({extended: true}))
-app.use(cors({credentials: true, origin: "https://bloggle-server.vercel.app"}))
+app.use(cors({credentials: true, function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },}))
 app.use(upload())
 app.use('/uploads', express.static(__dirname + '/uploads'))
 
