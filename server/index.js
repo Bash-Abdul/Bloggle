@@ -5,9 +5,7 @@ require('dotenv').config()
 const upload = require('express-fileupload')
 
 const allowedOrigins = [
-    "https://bloggle-client.vercel.app",
-    "https://bloggle-server.vercel.app",
-    "http://localhost:5175"
+    `${process.env.FRONTEND_URL}`
   ];
 
 const userRoutes = require('./routes/userRoutes')
@@ -17,7 +15,7 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware')
 const app = express(); // Initialise express
 app.use(express.json({extended: true}))
 app.use(express.urlencoded({extended: true}))
-app.use(cors({credentials: true, function (origin, callback) {
+app.use(cors({credentials: true, origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
