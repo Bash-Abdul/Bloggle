@@ -11,7 +11,7 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware')
 const app = express(); // Initialise express
 app.use(express.json({extended: true}))
 app.use(express.urlencoded({extended: true}))
-app.use(cors({credentials: true, origin: "https://bloggle-server.vercel.app"}))
+app.use(cors({credentials: true, origin: "*"}))
 app.use(upload())
 app.use('/uploads', express.static(__dirname + '/uploads'))
 
