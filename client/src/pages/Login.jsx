@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react'
 import { Link, Links, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { UserContext } from '../context/userContext'
+import { toast } from 'react-toastify';
+
 
 const Login = () => {
   const [userData, setUserData] = useState({
@@ -33,6 +35,10 @@ const Login = () => {
       setCurrentUser(user);
       console.log(user)
       console.log("login successful");
+      toast.success("login successful", {
+        // position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 3000, // Time in ms before it auto-closes
+      });
       navigate('/')
     } catch (err) {
       setError(err.response.data.message)

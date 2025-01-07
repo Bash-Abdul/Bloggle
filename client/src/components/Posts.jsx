@@ -4,13 +4,10 @@ import { DUMMY_POSTS } from '../data'
 import Loader from './Loader'
 import axios from 'axios'
 
-
-
 const Posts = () => {
     const [posts, setPosts] = useState([])
     const {error, setError} = useState('')
     const [loader, setLoader] = useState(false)
-
 
     useEffect(()=>{
       const fetchPosts = async () =>{
@@ -45,7 +42,7 @@ const Posts = () => {
                 No Posts Found
             </h2>
         )
-        
+
     }
     </section>
 

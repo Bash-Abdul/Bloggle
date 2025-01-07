@@ -19,12 +19,16 @@ import Logout from "./pages/Logout";
 import "./index.css";
 import DeletePosts from "./pages/DeletePosts";
 import ProtectedRoute from "./components/ProtectedRoute";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 
 
 function App() {
   return (
     <>
+    <ToastContainer />
     <Header/>
     {/* <Outlet/> */}
     <Routes>
