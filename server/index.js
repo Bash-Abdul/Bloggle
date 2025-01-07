@@ -6,6 +6,7 @@ const upload = require('express-fileupload')
 
 const allowedOrigins = [
     "https://bloggle-client.vercel.app",
+    "https://bloggle-server.vercel.app",
     "http://localhost:5175"
   ];
 
