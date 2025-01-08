@@ -6,6 +6,7 @@ import { FaCheck } from "react-icons/fa";
 import { UserContext } from '../context/userContext';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const UserProfile = () => {
   const [avatar, setAvatar] = useState('')
@@ -17,7 +18,7 @@ const UserProfile = () => {
   const [error, setError] = useState('');
   const [avatarAttached, setAvatarAttached] = useState(false);
 
-  const { currentUser, token } = useContext(UserContext);
+  const { currentUser, token, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
 
 
@@ -69,6 +70,30 @@ const UserProfile = () => {
     }
   }
 
+  const deleteAccount = async () => {
+    try {
+      const res = await axios.delete(`${import.meta.env.VITE_BASE_URL}/users/delete-user/${currentUser._id}`, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
+      if(res.status == 200){
+        setCurrentUser(null);
+        toast.success("User deleted successfully", {
+          // position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000, // Time in ms before it auto-closes
+        });
+        navigate('/login')
+      }
+      else{
+        toast.error("Error deleting user account.", {
+          autoClose: 2000,
+        });
+      }
+    } catch (err) {
+      toast.error(`${err.response?.data?.message}` || "Something went wrong", {
+        // position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000, // Time in ms before it auto-closes
+      });
+    }
+  }
+
 
 
   return (
@@ -92,6 +117,7 @@ const UserProfile = () => {
           </div>
 
           <h1>{currentUser.name}</h1>
+          <button className='btn danger other' onClick={deleteAccount}>Delete Account</button>
 
 
           {/* USER DETAILS FORM */}

@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const HttpError = require("../models/errorModel");
 const bcrypt = require("bcryptjs");
+const Post = require('../models/postModel')
 const jwt = require("jsonwebtoken");
 
 // FOR AVATAR CHANGE/FILE UPLOAD STUFF
@@ -224,75 +225,64 @@ const changeAvatar = async (req, res, next) => {
 //         res.status(200).json(updatedAvatar)
 //        })
 
-//         
+//
 //     } catch (error) {
 //         return next(new HttpError(error));
 //     }
 // }
-
-
-
 
 // ======= EDIT USER DETAILS (FROM PROFILE)
 // POST: api/users/edit-user
 // PROTECTED
 const editUser = async (req, res, next) => {
   try {
-    const {name, email, currentPassword, newPassword, confirmNewPassword} = req.body
-    if(!name || !email || !currentPassword || !newPassword) {
-        return next (
-            new HttpError("Fill in all fields.", 422)
-        )
+    const { name, email, currentPassword, newPassword, confirmNewPassword } =
+      req.body;
+    if (!name || !email || !currentPassword || !newPassword) {
+      return next(new HttpError("Fill in all fields.", 422));
     }
 
     //GET USER FROM DB
-    const user = await User.findById(req.user.id)
-    if(!user){
-        return next (
-            new HttpError("User not found", 404)
-        )
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return next(new HttpError("User not found", 404));
     }
 
-
     // MAKE SURE NEW EMAIL DOESN'T ALREADY EXIST
-    const emailExist = await User.findOne({email});
+    const emailExist = await User.findOne({ email });
     // WE WANT TO UPDATE OTHER DETAILS WITH/WITHOUT CHANGING THE MAIL (WHICH IS A UNIQUE ID BECAUSE WE USE IT TO LOGIN)
-    if(emailExist && (emailExist._id != req.user.id)) {
-        return next (
-            new HttpError("Email already exists", 422)
-        )
+    if (emailExist && emailExist._id != req.user.id) {
+      return next(new HttpError("Email already exists", 422));
     }
 
     //COMPARE CURRENT PASSWORD TO DB PASSWORD
-    const validateUserPassword = await bcrypt.compare(currentPassword, user.password);
-    if(!validateUserPassword){
-        return next (
-            new HttpError("Invalid current password", 422)
-        )
+    const validateUserPassword = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+    if (!validateUserPassword) {
+      return next(new HttpError("Invalid current password", 422));
     }
 
     // COMPARE NEW PASSWORD
-    if(newPassword !== confirmNewPassword){
-        return next (
-            new HttpError("New Pasword doesn't match", 422)
-        )
+    if (newPassword !== confirmNewPassword) {
+      return next(new HttpError("New Pasword doesn't match", 422));
     }
 
     //hash new password
-    const salt = await bcrypt.genSalt(10)
-    const Hash = await bcrypt.hash(newPassword, salt)
+    const salt = await bcrypt.genSalt(10);
+    const Hash = await bcrypt.hash(newPassword, salt);
 
     //
-    const newInfo = await User.findByIdAndUpdate(req.user.id, {name, email, password: Hash}, {new: true})
+    const newInfo = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, email, password: Hash },
+      { new: true }
+    );
 
     res.status(200).json(newInfo);
-
-
-
   } catch (error) {
-    return next(
-      new HttpError(error)
-    );
+    return next(new HttpError(error));
   }
 };
 
@@ -308,6 +298,30 @@ const getAuthors = async (req, res, next) => {
   }
 };
 
+// DELETE USER
+// DELETE: api/users/delete-Post/:id
+// PROTECTED
+const deleteUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return next(new HttpError("User not found", 404));
+    } else {
+      // Delete all posts associated with the user
+      await Post.deleteMany({ creator: user._id });
+
+      // Delete the user
+      await User.findByIdAndDelete(user._id);
+      // await User.findByIdAndDelete(user._id);
+      res
+        .status(200)
+        .json(`User ${user._id} and their posts deleted successfully`);
+    }
+  } catch (error) {
+    return next(new HttpError(error));
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
@@ -315,4 +329,5 @@ module.exports = {
   changeAvatar,
   editUser,
   getAuthors,
+  deleteUser,
 };
