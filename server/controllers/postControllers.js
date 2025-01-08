@@ -80,32 +80,20 @@ const getPost = async (req, res, next) => {
     }
 }
 
-/// GET POST BY CATEGORY
+/// GET POST BY USER/AUTHOR
 // GET: api/posts/users/:id
-// PROTECTED
-const getUsersPost = async (req, res, next) => {
-    try {
-        // res.json("User posts")
-        const creatorId = req.params.id;
-        if (!mongoose.Types.ObjectId.isValid(creatorId)) {
-            return next(new HttpError("Invalid creator ID", 400));
-        }
-        const userPost = await Post.find({ creator: creatorId }).sort({ updatedAt: -1 })
-        res.status(200).json(userPost);
-    } catch (error) {
-        return next(new HttpError("Error getting user posts", 422))
-    }
-}
+// UNPROTECTED
+const getUserPosts = async (req, res, next) =>{
 
-const postUserGet = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const userPost = await Post.find({ creator: id }).sort({ createdAt: -1 })
-        res.status(200).json(userPost)
+        const posts = await Post.find({ creator: id }).sort({ createdAt: -1 })
+        res.status(200).json(posts);
     } catch (error) {
         return next(new HttpError(error))
     }
 }
+
 
 
 /// GET POST BY CATEGORY
@@ -220,4 +208,4 @@ const deletePost = async (req, res, next) => {
 }
 
 
-module.exports = { createPost, getPosts, getPost, getUsersPost, getCatPost, editPost, deletePost, postUserGet }
+module.exports = { createPost, getPosts, getPost, getUserPosts,getCatPost, editPost, deletePost}

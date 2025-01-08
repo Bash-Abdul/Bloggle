@@ -19,7 +19,7 @@ const AuthorPosts = () => {
       setLoader(true);
 
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/posts/post/users/${id}`);
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/posts/user-post/${id}`);
         const post = response?.data
         setAuthorPosts(post)
       } catch (err) {
