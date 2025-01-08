@@ -24,7 +24,7 @@ const Dashboard = () => {
       setIsLoading(true);
 
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/posts/users/${id}`, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
+        const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/posts/user-post/${id}`, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
         setPosts(res.data)
       } catch (error) {
         console.log(error)
