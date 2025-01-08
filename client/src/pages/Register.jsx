@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [userData, setUserData] = useState({
@@ -29,8 +30,15 @@ const Register = () => {
 
       const newUser = response.data;
       console.log(newUser);
+      toast.success("Registration successful", {
+        // position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 3000, // Time in ms before it auto-closes
+      });
       if (!newUser) {
         setError("Couldn't register user. Please try again");
+        toast.error(`Error: ${error}`, {
+          position: toast.POSITION.TOP_RIGHT,
+      });
         return;
       }
       navigate('/login');

@@ -4,6 +4,7 @@ import 'react-quill/dist/quill.snow.css'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {UserContext} from '../context/userContext'
+import { toast } from 'react-toastify';
 
 const CreatePosts = () => {
   const [title, setTitle] = useState('')
@@ -60,6 +61,10 @@ const CreatePosts = () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/posts`, postData, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
       if(response.status == 201){
+        toast.success("Post created successful", {
+          // position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000, // Time in ms before it auto-closes
+        });
         return navigate('/')
       }
     } catch (err) {

@@ -4,6 +4,7 @@ import 'react-quill/dist/quill.snow.css'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import {UserContext} from '../context/userContext'
+import { toast } from 'react-toastify';
 
 const EditPosts = () => {
   const [title, setTitle] = useState('')
@@ -74,6 +75,10 @@ const EditPosts = () => {
     try {
       const response = await axios.patch(`${import.meta.env.VITE_BASE_URL}/posts/${id}`, postData, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
       if(response.status == 200){
+        toast.success("Post edited successfully", {
+          // position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000, // Time in ms before it auto-closes
+        });
         return navigate('/');
       }
     } catch (err) {
